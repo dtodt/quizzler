@@ -27,6 +27,8 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  List<Icon> scoreKeeper = [];
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -49,47 +51,48 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              textColor: Colors.white,
-              color: Colors.green,
-              child: Text(
-                'True',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 20.0,
-                ),
-              ),
-              onPressed: () {
-                //The user picked true.
-              },
-            ),
-          ),
+        buildQuizButton(label: 'True', color: Colors.green, onPressed: () {}),
+        buildQuizButton(label: 'False', color: Colors.red, onPressed: () {}),
+        Row(
+          children: scoreKeeper,
         ),
-        Expanded(
-          child: Padding(
-            padding: EdgeInsets.all(15.0),
-            child: FlatButton(
-              color: Colors.red,
-              child: Text(
-                'False',
-                style: TextStyle(
-                  fontSize: 20.0,
-                  color: Colors.white,
-                ),
-              ),
-              onPressed: () {
-                //The user picked false.
-              },
-            ),
-          ),
-        ),
-        //TODO: Add a Row here as your score keeper
       ],
     );
   }
+
+  Expanded buildQuizButton({Color color, String label, VoidCallback onPressed}) {
+    return Expanded(
+      child: Padding(
+        padding: EdgeInsets.all(15.0),
+        child: FlatButton(
+          color: color,
+          child: Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20.0,
+            ),
+          ),
+          onPressed: onPressed,
+        ),
+      ),
+    );
+  }
+
+  Icon buildRightAnswer() {
+    return Icon(
+      Icons.check,
+      color: Colors.green,
+    );
+  }
+
+  Icon buildWrongAnswer() {
+    return Icon(
+      Icons.close,
+      color: Colors.red,
+    );
+  }
+
 }
 
 /*
