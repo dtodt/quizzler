@@ -37,6 +37,7 @@ class _QuizPageState extends State<QuizPage> {
     'Approximately one quarter of human bones are in the feet.',
     'A slug\'s blood is green.'
   ];
+  final List<bool> answers = [false, true, true];
   final List<Icon> scoreKeeper = [];
 
   int currentQuestion;
@@ -130,6 +131,14 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void checkAnswer({bool answer}) {
+    if (answers[currentQuestion] == answer) {
+      player.play('sounds/correct.wav');
+      scoreKeeper.add(buildRightAnswer());
+    } else {
+      player.play('sounds/incorrect.wav');
+      scoreKeeper.add(buildWrongAnswer());
+    }
+
     findNextQuestion();
   }
 }
