@@ -1,3 +1,6 @@
+import 'dart:math';
+
+import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(QuizzlerApp());
@@ -27,7 +30,22 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  List<Icon> scoreKeeper = [];
+  final player = AudioCache();
+
+  final List<String> questions = [
+    'You can lead a cow down stairs but not up stairs.',
+    'Approximately one quarter of human bones are in the feet.',
+    'A slug\'s blood is green.'
+  ];
+  final List<Icon> scoreKeeper = [];
+
+  int currentQuestion;
+
+  @override
+  void initState() {
+    super.initState();
+    findNextQuestion();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +59,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.all(10.0),
             child: Center(
               child: Text(
-                'This is where the question text will go.',
+                questions[currentQuestion],
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 25.0,
@@ -51,8 +69,14 @@ class _QuizPageState extends State<QuizPage> {
             ),
           ),
         ),
-        buildQuizButton(label: 'True', color: Colors.green, onPressed: () {}),
-        buildQuizButton(label: 'False', color: Colors.red, onPressed: () {}),
+        buildQuizButton(
+            label: 'True',
+            color: Colors.green,
+            onPressed: () => checkAnswer(answer: true)),
+        buildQuizButton(
+            label: 'False',
+            color: Colors.red,
+            onPressed: () => checkAnswer(answer: false)),
         Row(
           children: scoreKeeper,
         ),
@@ -60,7 +84,8 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Expanded buildQuizButton({Color color, String label, VoidCallback onPressed}) {
+  Expanded buildQuizButton(
+      {Color color, String label, VoidCallback onPressed}) {
     return Expanded(
       child: Padding(
         padding: EdgeInsets.all(15.0),
@@ -93,6 +118,20 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
+  void findNextQuestion() {
+    int nextQuestion = Random().nextInt(3);
+    if (nextQuestion != currentQuestion) {
+      setState(() {
+        currentQuestion = nextQuestion;
+      });
+    } else {
+      findNextQuestion();
+    }
+  }
+
+  void checkAnswer({bool answer}) {
+    findNextQuestion();
+  }
 }
 
 /*
