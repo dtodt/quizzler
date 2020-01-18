@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:quizzler/question.dart';
 
 class QuizBrain {
@@ -41,12 +39,17 @@ class QuizBrain {
     return _questions[_currentQuestion].answer;
   }
 
+  bool isFinished() {
+    return _currentQuestion == _questions.length - 1;
+  }
+
   void findNextQuestion() {
-    final int nextQuestion = Random().nextInt(_questions.length);
-    if (nextQuestion != _currentQuestion) {
-      _currentQuestion = nextQuestion;
-    } else {
-      findNextQuestion();
+    if (_currentQuestion < _questions.length - 1) {
+      _currentQuestion++;
     }
+  }
+
+  void reset() {
+    _currentQuestion = 0;
   }
 }

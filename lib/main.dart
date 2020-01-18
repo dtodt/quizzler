@@ -1,6 +1,7 @@
 import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 final audioPlayer = AudioCache();
 final QuizBrain quizBrain = QuizBrain();
@@ -106,16 +107,46 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   void checkAnswer({bool answer}) {
-    setState(() {
-      if (quizBrain.getQuestionAnswer() == answer) {
-        audioPlayer.play('sounds/correct.wav');
-        scoreKeeper.add(buildRightAnswer());
-      } else {
-        audioPlayer.play('sounds/incorrect.wav');
-        scoreKeeper.add(buildWrongAnswer());
-      }
+    if (quizBrain.isFinished()) {
+      Alert(
+        context: context,
+        title: "GAME FINISHED",
+        desc: "You finished the game, starting over.",
+        closeFunction: () => reset(),
+        buttons: [
+          DialogButton(
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () {
+              reset();
+              Navigator.pop(context);
+            },
+            width: 120,
+          )
+        ],
+      ).show();
+    } else {
+      setState(() {
+        if (quizBrain.getQuestionAnswer() == answer) {
+          audioPlayer.play('sounds/correct.wav');
+          scoreKeeper.add(buildRightAnswer());
+        } else {
+          audioPlayer.play('sounds/incorrect.wav');
+          scoreKeeper.add(buildWrongAnswer());
+        }
 
-      quizBrain.findNextQuestion();
+        quizBrain.findNextQuestion();
+      });
+    }
+  }
+
+  void reset() {
+    setState(() {
+      scoreKeeper.clear();
+
+      quizBrain.reset();
     });
   }
 }
