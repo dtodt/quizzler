@@ -2,6 +2,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:quizzler/quiz_brain.dart';
 
+final audioPlayer = AudioCache();
 final QuizBrain quizBrain = QuizBrain();
 
 void main() => runApp(QuizzlerApp());
@@ -31,8 +32,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  final player = AudioCache();
-
   final List<Icon> scoreKeeper = [];
 
   @override
@@ -109,10 +108,10 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer({bool answer}) {
     setState(() {
       if (quizBrain.getQuestionAnswer() == answer) {
-        player.play('sounds/correct.wav');
+        audioPlayer.play('sounds/correct.wav');
         scoreKeeper.add(buildRightAnswer());
       } else {
-        player.play('sounds/incorrect.wav');
+        audioPlayer.play('sounds/incorrect.wav');
         scoreKeeper.add(buildWrongAnswer());
       }
 
