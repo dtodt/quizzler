@@ -109,14 +109,15 @@ class _QuizPageState extends State<QuizPage> {
   void checkAnswer({bool answer}) {
     if (quizBrain.isFinished()) {
       Alert(
+        type: AlertType.none,
         context: context,
         title: "GAME FINISHED",
-        desc: "You finished the game, starting over.",
+        desc: "Thank you for playing!",
         closeFunction: () => reset(),
         buttons: [
           DialogButton(
             child: Text(
-              "OK",
+              "Restart",
               style: TextStyle(color: Colors.white, fontSize: 20),
             ),
             onPressed: () {
